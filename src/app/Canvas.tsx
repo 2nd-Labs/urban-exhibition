@@ -21,8 +21,6 @@ const Canvas = (props: any) => {
       ? `#${searchParams.get("beta")}`
       : randomColor();
 
-    console.log(randomColorAlpha, randomColorBeta);
-
     for (let x = 0; x <= width; x += 120) {
       for (
         let y = 0;
@@ -55,7 +53,7 @@ const Canvas = (props: any) => {
     const context = canvas.getContext("2d");
 
     draw(context);
-  }, [draw]);
+  }, []);
 
   return <canvas ref={canvasRef} height="3120" width="1440" {...props} />;
 };
