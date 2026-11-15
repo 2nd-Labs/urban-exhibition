@@ -11,20 +11,19 @@ const myFont = localFont({
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex min-h-screen flex-col items-center gap-8 px-4 py-8 font-[family-name:var(--font-geist-sans)] sm:gap-16 sm:px-8 sm:py-12">
       <div
-        className={`text-6xl text-stone-300 ${myFont.className} content-center`}
+        className={`text-center text-[clamp(2rem,8vw,3.75rem)] text-stone-300 ${myFont.className}`}
       >
         Urban Exhibition v0.1.0
       </div>
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <div>
+      <main className="w-full max-w-[1440px]">
+        <div className="w-full">
           <Suspense>
-            <Canvas />
+            <Canvas className="block h-auto w-full" />
           </Suspense>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
     </div>
   );
 }
