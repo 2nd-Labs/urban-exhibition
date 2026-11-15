@@ -1,10 +1,9 @@
 import { useSearchParams } from "next/navigation";
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const Canvas = (props: any) => {
   const searchParams = useSearchParams();
-
-  const canvasRef = useRef(null);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   const randomColor = () => {
     return `rgba(${Math.ceil(Math.random() * 255)},${Math.ceil(Math.random() * 255)},${Math.ceil(Math.random() * 255)},92)`;
@@ -49,13 +48,32 @@ const Canvas = (props: any) => {
   };
 
   useEffect(() => {
-    const canvas: any = canvasRef.current;
+    const canvas = document.createElement("canvas");
+    canvas.height = 3120;
+    canvas.width = 1440;
     const context = canvas.getContext("2d");
 
+    if (!context) {
+      throw new Error("Unable to create a canvas rendering context.");
+    }
+
     draw(context);
+    setImageSrc(canvas.toDataURL("image/png"));
   }, []);
 
-  return <canvas ref={canvasRef} height="3120" width="1440" {...props} />;
+  if (!imageSrc) {
+    return null;
+  }
+
+  return (
+    <img
+      src={imageSrc}
+      alt="Generiertes Bild"
+      height="3120"
+      width="1440"
+      {...props}
+    />
+  );
 };
 
 export default Canvas;
