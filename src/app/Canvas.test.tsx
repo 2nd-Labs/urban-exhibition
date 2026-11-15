@@ -39,7 +39,7 @@ describe("Canvas", () => {
   it("generates and displays a saveable PNG image", async () => {
     render(<Canvas className="generated-image" />);
 
-    const image = await screen.findByRole("img", { name: "Generiertes Bild" });
+    const image = await screen.findByRole("img", { name: "Generated Image" });
 
     expect(image.tagName).toBe("IMG");
     expect(image).toHaveAttribute("src", "blob:generated-image");
@@ -59,7 +59,7 @@ describe("Canvas", () => {
       .mockReturnValueOnce("blob:second-image");
     const view = render(<Canvas />);
 
-    await screen.findByRole("img", { name: "Generiertes Bild" });
+    await screen.findByRole("img", { name: "Generated Image" });
     window.history.replaceState({}, "", "/?pattern=columns");
 
     await act(async () => {
@@ -68,7 +68,7 @@ describe("Canvas", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("img", { name: "Generiertes Bild" }),
+        screen.getByRole("img", { name: "Generated Image" }),
       ).toHaveAttribute("src", "blob:second-image");
     });
     expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:first-image");
