@@ -12,6 +12,23 @@ updates:
     labels:
       - 'dependencies'
       - 'javascript'
+    assignees:
+      - '0xflotus'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+      time: '09:00'
+      timezone: 'Europe/Berlin'
+    open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+    assignees:
+      - '0xflotus'
     commit-message:
       prefix: 'chore'
       include: 'scope'
