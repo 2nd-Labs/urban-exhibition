@@ -1,53 +1,24 @@
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import type { ImgHTMLAttributes } from "react";
+import { useEffect, useState } from "react";
+import { draw, getDrawOptions } from "./image-generator";
 
-const Canvas = (props: any) => {
+/* eslint-disable @next/next/no-img-element -- Native rendering preserves context-menu saving for the PNG blob. */
+const Canvas = (props: ImgHTMLAttributes<HTMLImageElement>) => {
   const searchParams = useSearchParams();
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
-
-  const randomColor = () => {
-    return `rgba(${Math.ceil(Math.random() * 255)},${Math.ceil(Math.random() * 255)},${Math.ceil(Math.random() * 255)},92)`;
-  };
-
-  const draw = (ctx: any) => {
-    const height = ctx.canvas.height;
-    const width = ctx.canvas.width;
-
-    const randomColorAlpha = searchParams.get("alpha")
-      ? `#${searchParams.get("alpha")}`
-      : randomColor();
-    const randomColorBeta = searchParams.get("beta")
-      ? `#${searchParams.get("beta")}`
-      : randomColor();
-
-    for (let x = 0; x <= width; x += 120) {
-      for (
-        let y = 0;
-        y <= height;
-        y += (searchParams.get("long") === "true" ? 2 : 1) * 120
-      ) {
-        if (
-          searchParams.get("random") === "true"
-            ? Math.random() > 0.5
-            : searchParams.get("eval")
-              ? eval(searchParams.get("eval")!)
-              : Math.random() > 0.5
-        ) {
-          ctx.fillStyle = randomColorAlpha;
-        } else {
-          ctx.fillStyle = randomColorBeta;
-        }
-        ctx.fillRect(
-          x,
-          y,
-          120,
-          (searchParams.get("long") === "true" ? 2 : 1) * 120,
-        );
-      }
-    }
-  };
+  const searchParamsString = searchParams.toString();
+  const [image, setImage] = useState<{
+    src: string;
+    params: string;
+  } | null>(null);
+  const [imageError, setImageError] = useState<{
+    message: string;
+    params: string;
+  } | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
+    let objectUrl: string | null = null;
     const canvas = document.createElement("canvas");
     canvas.height = 3120;
     canvas.width = 1440;
@@ -57,17 +28,42 @@ const Canvas = (props: any) => {
       throw new Error("Unable to create a canvas rendering context.");
     }
 
-    draw(context);
-    setImageSrc(canvas.toDataURL("image/png"));
-  }, []);
+    draw(context, getDrawOptions(new URLSearchParams(searchParamsString)));
+    canvas.toBlob((blob) => {
+      if (cancelled) {
+        return;
+      }
+      if (!blob) {
+        setImageError({
+          message: "Unable to export the generated image.",
+          params: searchParamsString,
+        });
+        return;
+      }
 
-  if (!imageSrc) {
+      objectUrl = URL.createObjectURL(blob);
+      setImage({ src: objectUrl, params: searchParamsString });
+    }, "image/png");
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
+  }, [searchParamsString]);
+
+  if (imageError?.params === searchParamsString) {
+    return <p role="alert">{imageError.message}</p>;
+  }
+
+  if (image?.params !== searchParamsString) {
     return null;
   }
 
   return (
     <img
-      src={imageSrc}
+      src={image.src}
       alt="Generiertes Bild"
       height="3120"
       width="1440"
