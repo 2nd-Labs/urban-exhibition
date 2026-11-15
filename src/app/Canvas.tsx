@@ -64,7 +64,7 @@ const Canvas = (props: ImgHTMLAttributes<HTMLImageElement>) => {
   return (
     <img
       src={image.src}
-      alt="Generiertes Bild"
+      alt="Generated Image"
       height="3120"
       width="1440"
       {...props}

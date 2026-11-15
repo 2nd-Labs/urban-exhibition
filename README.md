@@ -17,7 +17,7 @@ The generated image can be saved using the browser's image context menu. URL par
 - `long=true`: use taller tiles
 - `random=true`: force the random pattern
 
-For example: `/?pattern=checkerboard&alpha=1e1e1e&beta=f5f5f5`. The former `eval` parameter is not supported; use `pattern` instead.
+For example: `/?pattern=checkerboard&alpha=1e1e1e&beta=f5f5f5`.
 
 ## Tests
 

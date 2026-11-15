@@ -15,7 +15,7 @@ export default function Home() {
       <div
         className={`text-center text-[clamp(2rem,8vw,3.75rem)] text-stone-300 ${myFont.className}`}
       >
-        Urban Exhibition v0.2.0
+        Urban Exhibition v0.3.0
       </div>
       <main className="w-full max-w-[1440px]">
         <div className="w-full">
