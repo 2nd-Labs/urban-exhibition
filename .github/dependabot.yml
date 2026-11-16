@@ -7,7 +7,7 @@ updates:
       time: '09:00'
       timezone: 'Europe/Berlin'
     cooldown:
-      default-days: 2
+      default-days: 1
     labels:
       - 'dependencies'
       - 'javascript'
