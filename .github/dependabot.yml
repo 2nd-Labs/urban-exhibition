@@ -6,6 +6,7 @@ updates:
       interval: 'daily'
       time: '09:00'
       timezone: 'Europe/Berlin'
+    open-pull-requests-limit: 50
     cooldown:
       default-days: 1
     labels:
@@ -22,6 +23,7 @@ updates:
       interval: 'daily'
       time: '09:00'
       timezone: 'Europe/Berlin'
+    open-pull-requests-limit: 10
     labels:
       - 'dependencies'
       - 'github-actions'
